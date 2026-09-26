@@ -12,9 +12,9 @@
 
 - 模型固定为渠道Y `seedance55`；若实时模型目录不再返回该模型，停止并报告，不自动换挡位。
 - 输出固定为720p、9:16、30秒；生成前必须实时查询余额并执行estimate。
-- 参考图固定为四张：人物身份、墨沙穹顶、竖海长堤、新终场图。
+- 参考图固定为四张：新版真人洛神身份、墨沙穹顶、竖海长堤、新终场图。
 - 关键转场固定使用“金色椭圆开口→八荒环台→水拱→云环→日出”的圆弧母题；只做图形匹配硬切，不做材质变形。
-- `01_luoshen_identity.png`、`02_ink_vault.png`、`05_vertical_sea.png`使用`reference_image`；`10_open_sea_luoshen_final.png`使用`last_frame`。
+- `01_luoshen_identity_new.jpg`、`02_ink_vault.png`、`05_vertical_sea.png`使用`reference_image`；`10_open_sea_luoshen_final.png`使用`last_frame`。
 - 第二版幂等键固定为`luoshen-huang-zhetian-kaihai-v2-20260927-channel-y-v1`；结果不确定时仅用相同参数复用此键。
 - 渠道Y不上传参考音频；下载后以`audio/MV_30s_master.wav`替换音轨。
 - 不自动发起第三次付费生成。第二版若不达标，记录偏差并等待用户决定。
@@ -25,7 +25,7 @@
 ### Task 1: 制作终场参考图
 
 **Files:**
-- Read: `assets/01_luoshen_identity.png`
+- Read: `assets_v2/01_luoshen_identity_new.jpg`
 - Read: `assets/07_open_sea_dawn.png`
 - Create: `assets_v2/10_open_sea_luoshen_final.png`
 
@@ -42,7 +42,7 @@
 以两张本地图片作为参考，使用以下完整指令：
 
 ```text
-创建一张竖屏9:16东方手绘动画插画终场画板。严格继承第一张参考图中唯一成年洛神的成熟柔和五官、黑色超长半挽发、白花头饰、浅青发带与金色流苏、象牙白和浅青层叠广袖汉服、白花刺绣、浅青绣鞋；画面只能出现一个洛神，不能出现三视图、复制人物或文字。严格继承第二张参考图的日出开海环境：青黑岩石平台、广阔海湾、远山、两侧云幕与中央琥珀色日出。洛神完整站稳在前景平台中央偏下，身体侧前朝向日出，双脚与石面接触清楚，裙摆落在平台上且不穿地；她刚经历压迫后抵达开放天地，姿态放松但不软弱，头部轻微回望镜头旁，嘴角有克制而明亮的笑意。中近全身构图，人物约占画高45%，肩后海平线与日出可辨，发带和长发向后轻摆。保持青黑、浅青、象牙白、琥珀金统一色板，空间透视清楚，不转真人摄影或塑料3D，不要武器、翅膀、文字、水印、灰色占位人或无关角色。
+创建一张竖屏9:16高质量真人写实东方幻想电影终场画板。严格继承第一张角色卡中同一位成年洛神的精致真实五官、超长微卷黑发、成组白花发饰、浅金流苏、灰绿色交领刺绣、米白半透明广袖和层叠拖地裙；忽略角色卡全部文字、边框、色板和细节拼图，画面只能出现一个洛神。继承第二张场景图的日出开海环境：青黑岩石平台、广阔海湾、远山、两侧云幕与中央琥珀色日出。洛神完整站稳在前景平台中央偏下，身体侧前朝向日出，双脚与石面接触清楚，裙摆落在平台上且不穿地；她刚经历压迫后抵达开放天地，姿态放松但不软弱，头部轻微回望镜头旁，嘴角有克制而明亮的笑意。中近全身构图，人物约占画高45%，肩后海平线与日出可辨，长发和流苏向后轻摆。保持自然皮肤、真实半透明织物、青黑灰绿米白与琥珀金统一色板，不转动漫插画或塑料3D，不要武器、翅膀、文字、水印、灰色占位人或无关角色。
 ```
 
 - [ ] **Step 3: 保存并目视验收**
@@ -124,7 +124,7 @@ git commit -m "Add Huang v2 Seedance prompt"
 
 **Files:**
 - Read: `Seedance2.5_30秒完整提示词_V2.txt`
-- Read: `assets/01_luoshen_identity.png`
+- Read: `assets_v2/01_luoshen_identity_new.jpg`
 - Read: `assets/02_ink_vault.png`
 - Read: `assets/05_vertical_sea.png`
 - Read: `assets_v2/10_open_sea_luoshen_final.png`
@@ -147,7 +147,7 @@ python $cli balance
 - [ ] **Step 2: 顺序上传四张图片**
 
 ```powershell
-python $cli upload '.\assets\01_luoshen_identity.png' --kind image
+python $cli upload '.\assets_v2\01_luoshen_identity_new.jpg' --kind image
 python $cli upload '.\assets\02_ink_vault.png' --kind image
 python $cli upload '.\assets\05_vertical_sea.png' --kind image
 python $cli upload '.\assets_v2\10_open_sea_luoshen_final.png' --kind image
