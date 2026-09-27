@@ -76,8 +76,8 @@ Dialogue: 0,0:00:20.18,0:00:23.48,Lyric,,0,0,0,,万古梦回涅槃何道
 - [ ] **Step 4: 机械检查ASS结构和时间**
 
 ```powershell
-$ass = Get-Content -Raw -LiteralPath '.\荒_V1_歌词字幕.ass'
-if (($ass | Select-String -Pattern '^Dialogue:' -AllMatches).Matches.Count -ne 6) { throw 'Expected six dialogue lines' }
+$dialogueCount = (Select-String -LiteralPath '.\荒_V1_歌词字幕.ass' -Pattern '^Dialogue:').Count
+if ($dialogueCount -ne 6) { throw 'Expected six dialogue lines' }
 rg -n '4\.00|7\.18|9\.30|13\.46|14\.06|17\.14|19\.80|20\.18|23\.48|林霄|何道' '.\荒_V1_歌词字幕.ass'
 ```
 
@@ -86,7 +86,7 @@ rg -n '4\.00|7\.18|9\.30|13\.46|14\.06|17\.14|19\.80|20\.18|23\.48|林霄|何道
 - [ ] **Step 5: 渲染第三句代表帧验证字体链路**
 
 ```powershell
-ffmpeg -hide_banner -loglevel error -y -ss 10.5 -i '.\Seedance2.5_荒_渠道Y_任务189998_母带成片.mp4' -vf "subtitles='荒_V1_歌词字幕.ass':fontsdir='C\:/Windows/Fonts'" -frames:v 1 -q:v 2 '.\任务189998_歌词字幕版_字幕预检.jpg'
+ffmpeg -hide_banner -loglevel error -y -i '.\Seedance2.5_荒_渠道Y_任务189998_母带成片.mp4' -ss 10.5 -vf "subtitles='荒_V1_歌词字幕.ass':fontsdir='C\:/Windows/Fonts'" -frames:v 1 -q:v 2 '.\任务189998_歌词字幕版_字幕预检.jpg'
 ```
 
 预期：命令退出0；预检图显示完整“踏碎林霄又葬下了天”，无方框、乱码或截断。目视不通过时只调整字体、字号、边距、描边或阴影，不改歌词和时间轴。
@@ -144,7 +144,7 @@ ffprobe -v error -show_entries format=duration,size:stream=codec_type,codec_name
 
 - [ ] **Step 1: 生成九格字幕联系表**
 
-在1.0、5.0、8.0、11.0、15.0、18.0、22.0、24.5、29.0秒抽帧，按3×3从左到右、从上到下排列。1.0与29.0秒必须无字幕，其余代表帧覆盖六句歌词和一句间空白。
+在1.0、5.0、8.0、11.0、15.0、18.0、22.0、24.5、29.0秒抽帧，按3×3从左到右、从上到下排列。1.0与29.0秒必须无字幕；5.0至22.0秒的六格覆盖六句歌词；24.5秒验证最后一句结束后的尾段空白。
 
 ```powershell
 ffmpeg -hide_banner -loglevel error -y -ss 1.0 -i '.\Seedance2.5_荒_渠道Y_任务189998_母带歌词字幕版.mp4' -ss 5.0 -i '.\Seedance2.5_荒_渠道Y_任务189998_母带歌词字幕版.mp4' -ss 8.0 -i '.\Seedance2.5_荒_渠道Y_任务189998_母带歌词字幕版.mp4' -ss 11.0 -i '.\Seedance2.5_荒_渠道Y_任务189998_母带歌词字幕版.mp4' -ss 15.0 -i '.\Seedance2.5_荒_渠道Y_任务189998_母带歌词字幕版.mp4' -ss 18.0 -i '.\Seedance2.5_荒_渠道Y_任务189998_母带歌词字幕版.mp4' -ss 22.0 -i '.\Seedance2.5_荒_渠道Y_任务189998_母带歌词字幕版.mp4' -ss 24.5 -i '.\Seedance2.5_荒_渠道Y_任务189998_母带歌词字幕版.mp4' -ss 29.0 -i '.\Seedance2.5_荒_渠道Y_任务189998_母带歌词字幕版.mp4' -filter_complex "[0:v]scale=240:426[a];[1:v]scale=240:426[b];[2:v]scale=240:426[c];[3:v]scale=240:426[d];[4:v]scale=240:426[e];[5:v]scale=240:426[f];[6:v]scale=240:426[g];[7:v]scale=240:426[h];[8:v]scale=240:426[i];[a][b][c][d][e][f][g][h][i]xstack=inputs=9:layout=0_0|240_0|480_0|0_426|240_426|480_426|0_852|240_852|480_852" -frames:v 1 -q:v 2 '.\任务189998_歌词字幕版_审片联系表.jpg'
